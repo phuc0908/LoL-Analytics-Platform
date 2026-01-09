@@ -1,0 +1,36 @@
+{
+  "feature_names": [
+    "blue_dragons",
+    "red_dragons",
+    "blue_heralds",
+    "red_heralds",
+    "blue_barons",
+    "red_barons",
+    "blue_towers",
+    "red_towers",
+    "blue_teamkills",
+    "red_teamkills",
+    "blue_teamdeaths",
+    "red_teamdeaths",
+    "golddiff_at10",
+    "xpdiff_at10",
+    "csdiff_at10",
+    "golddiff_at15",
+    "xpdiff_at15",
+    "csdiff_at15",
+    "blue_firstblood",
+    "blue_firstdragon",
+    "blue_firstherald",
+    "blue_firsttower"
+  ],
+  "metrics": {
+    "accuracy": 0.989557434112382,
+    "auc": 0.9996503565965393,
+    "cv_mean": 0.9886842202907153,
+    "cv_std": 0.0022041802182547203,
+    "train_size": 8042,
+    "test_size": 2011,
+    "features": 22,
+    "trained_at": "2026-01-09T15:18:11.054128"
+  }
+}
