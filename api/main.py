@@ -27,11 +27,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Paths
-BASE_DIR = Path(__file__).parent.parent
-ML_DIR = BASE_DIR / "ml"
-DATA_DIR = ML_DIR / "data"
-MODELS_DIR = ML_DIR / "models"
+# Paths - support both local development and production
+BASE_DIR = Path(__file__).parent
+# Check if running in production (data in same folder) or development (data in ../ml/)
+if (BASE_DIR / "data").exists():
+    # Production mode (Railway/Docker)
+    DATA_DIR = BASE_DIR / "data"
+    MODELS_DIR = BASE_DIR / "models"
+else:
+    # Development mode (local)
+    ML_DIR = BASE_DIR.parent / "ml"
+    DATA_DIR = ML_DIR / "data"
+    MODELS_DIR = ML_DIR / "models"
 
 # Global variables for loaded data
 model = None
@@ -90,12 +97,26 @@ def load_resources():
             print("⚠️ Advanced statistics not found - run advanced_stats.py")
         
         # Load raw data for dynamic queries
-        raw_data_path = BASE_DIR / "2025_LoL_esports_match_data_from_OraclesElixir.csv"
-        if raw_data_path.exists():
+        # Check multiple possible locations for raw data
+        possible_paths = [
+            BASE_DIR / "2025_LoL_esports_match_data_from_OraclesElixir.csv",
+            BASE_DIR.parent / "2025_LoL_esports_match_data_from_OraclesElixir.csv",
+            DATA_DIR / "raw_matches.csv",
+        ]
+        
+        raw_data_path = None
+        for path in possible_paths:
+            if path.exists():
+                raw_data_path = path
+                break
+        
+        if raw_data_path:
             raw_df = pd.read_csv(raw_data_path, low_memory=False)
             team_df = raw_df[raw_df['position'] == 'team'].copy()
             player_df = raw_df[raw_df['position'] != 'team'].copy()
             print(f"✅ Raw data loaded ({len(raw_df):,} rows)")
+        else:
+            print("⚠️ Raw data not found - some features will be limited")
             
     except Exception as e:
         print(f"❌ Error loading resources: {e}")

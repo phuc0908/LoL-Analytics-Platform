@@ -33,8 +33,11 @@ venv/
 
 # Data files (too large for git)
 *.xlsx
-*.csv
-!ml/stats/*.csv
+
+# Keep necessary CSV files for deployment
+!api/data/*.csv
+!api/*.csv
+!ml/data/*.csv
 
 # Jupyter
 .ipynb_checkpoints/

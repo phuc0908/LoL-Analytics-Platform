@@ -15,12 +15,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY main.py .
 
-# Copy ML models and data (these should be in api folder for deployment)
+# Copy ML models and data
 COPY models/ ./models/
 COPY data/ ./data/
 
-# Expose port
+# Copy raw data if exists (optional, for full functionality)
+COPY 2025_LoL_esports_match_data_from_OraclesElixir.csv* ./
+
+# Expose port (Railway uses PORT env variable)
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application - use PORT env variable if available
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}

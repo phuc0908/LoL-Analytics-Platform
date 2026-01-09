@@ -3,7 +3,7 @@ Write-Host "=== Preparing LoL Analytics for deployment ===" -ForegroundColor Cya
 
 # Copy models to api folder
 Write-Host ""
-Write-Host "[1/2] Copying ML models to api folder..." -ForegroundColor Yellow
+Write-Host "[1/3] Copying ML models to api folder..." -ForegroundColor Yellow
 
 if (Test-Path "ml\models") {
     if (Test-Path "api\models") { Remove-Item -Recurse -Force "api\models" }
@@ -14,7 +14,7 @@ if (Test-Path "ml\models") {
 }
 
 # Copy data to api folder
-Write-Host "[2/2] Copying stats data to api folder..." -ForegroundColor Yellow
+Write-Host "[2/3] Copying stats data to api folder..." -ForegroundColor Yellow
 
 if (Test-Path "ml\data") {
     if (Test-Path "api\data") { Remove-Item -Recurse -Force "api\data" }
@@ -22,6 +22,18 @@ if (Test-Path "ml\data") {
     Write-Host "[OK] Copied ml\data -> api\data" -ForegroundColor Green
 } else {
     Write-Host "[ERROR] ml\data not found! Run training first." -ForegroundColor Red
+}
+
+# Copy raw data to api folder
+Write-Host "[3/3] Copying raw data to api folder..." -ForegroundColor Yellow
+
+$rawDataFile = "2025_LoL_esports_match_data_from_OraclesElixir.csv"
+if (Test-Path $rawDataFile) {
+    Copy-Item -Force $rawDataFile "api\$rawDataFile"
+    $sizeMB = [math]::Round((Get-Item "api\$rawDataFile").Length / 1MB, 1)
+    Write-Host "[OK] Copied $rawDataFile ($sizeMB MB)" -ForegroundColor Green
+} else {
+    Write-Host "[WARN] Raw data not found - some features will be limited" -ForegroundColor Yellow
 }
 
 Write-Host ""
