@@ -1,4 +1,4 @@
-# 🎮 LoL Esports Analytics - Killer Project
+# LoL Esports Analytics
 
 ## Overview
 AI-powered League of Legends Esports Analytics Platform với Win Prediction Model.
